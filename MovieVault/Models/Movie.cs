@@ -3,14 +3,14 @@ using MySql.Data.MySqlClient;
 
 namespace MovieVault.Models
 {
-  public class MovieVault
+  public class Movie
   {
     private string _name;
     private string _director;
     private int _year;
     private int _id;
 
-    public movie (string name, string director, int year, int id = 0)
+    public Movie (string name, string director, int year, int id = 0)
     {
       _name = name;
       _director = director;
@@ -33,7 +33,7 @@ namespace MovieVault.Models
       return _year;
     }
 
-    public int (GetId)
+    public int GetId()
     {
       return _id;
     }
@@ -49,15 +49,17 @@ namespace MovieVault.Models
       {
         Movie newMovie = (Movie) otherMovie;
         bool idEquality = (this.GetId() == newMovie.GetId());
-        bool descriptionEquality = (this.GetDescription() == newMovie.GetDescription());
-        return (idEquality && descriptionEquality);
+        bool nameEquality = (this.GetName() == newMovie.GetName());
+        bool directorEquality = (this.GetDirector() == newMovie.GetDirector());
+        bool yearEquality = (this.GetYear() == newMovie.GetYear());
+        return (idEquality && nameEquality && directorEquality && yearEquality);
       }
     }
 
     public static Movie Find(int id)
     {
       MySqlConnection conn = DB.Connection();
-      conn.Opn();
+      conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
       cmd.CommandText = @"SELECT * FROM 'movies' WHERE id = @thisId;";
       MySqlParameter thisId = new MySqlParameter();
@@ -96,10 +98,10 @@ namespace MovieVault.Models
       MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
       while (rdr.Read())
       {
-        movieId = rdr.GetInt32(0);
-        movieName = rdr.GetString(1);
-        movieDirector = rdr.GetString(2);
-        movieYear = rdr.GetInt32(3);
+        int movieId = rdr.GetInt32(0);
+        string movieName = rdr.GetString(1);
+        string movieDirector = rdr.GetString(2);
+        int movieYear = rdr.GetInt32(3);
         Movie newMovie = new Movie(movieName, movieDirector, movieYear, movieId);
         allMovies.Add(newMovie);
       }
@@ -120,13 +122,15 @@ namespace MovieVault.Models
       MySqlParameter name = new MySqlParameter();
       name.ParameterName = "@MovieName";
       name.Value = _name;
+      cmd.Parameters.Add(name);
       MySqlParameter director = new MySqlParameter();
       director.ParameterName = "@MovieDirector";
       director.Value = _director;
+      cmd.Parameters.Add(director);
       MySqlParameter year = new MySqlParameter();
       year.ParameterName = "@MovieYear";
       year.Value = _year;
-      cmd.Parameters.Add(name, director, year);
+      cmd.Parameters.Add(year);
       cmd.ExecuteNonQuery();
       _id = (int) cmd.LastInsertedId;
 
