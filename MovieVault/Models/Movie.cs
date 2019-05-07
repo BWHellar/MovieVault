@@ -5,22 +5,22 @@ namespace MovieVault.Models
 {
   public class Movie
   {
-    private string _name;
+    private string _title;
     private string _director;
     private int _year;
     private int _id;
 
-    public Movie (string name, string director, int year, int id = 0)
+    public Movie (string title, string director, int year, int id = 0)
     {
-      _name = name;
+      _title = title;
       _director = director;
       _year = year;
       _id = id;
     }
 
-    public string GetName()
+    public string GetTitle()
     {
-      return _name;
+      return _title;
     }
 
     public string GetDirector()
@@ -49,10 +49,10 @@ namespace MovieVault.Models
       {
         Movie newMovie = (Movie) otherMovie;
         bool idEquality = (this.GetId() == newMovie.GetId());
-        bool nameEquality = (this.GetName() == newMovie.GetName());
+        bool titleEquality = (this.GetTitle() == newMovie.GetTitle());
         bool directorEquality = (this.GetDirector() == newMovie.GetDirector());
         bool yearEquality = (this.GetYear() == newMovie.GetYear());
-        return (idEquality && nameEquality && directorEquality && yearEquality);
+        return (idEquality && titleEquality && directorEquality && yearEquality);
       }
     }
 
@@ -68,17 +68,17 @@ namespace MovieVault.Models
       cmd.Parameters.Add(thisId);
       var rdr = cmd.ExecuteReader() as MySqlDataReader;
       int movieId = 0;
-      string movieName = "";
+      string movieTitle = "";
       string movieDirector = "";
       int movieYear = 0;
       while (rdr.Read())
       {
         movieId = rdr.GetInt32(0);
-        movieName = rdr.GetString(1);
+        movieTitle = rdr.GetString(1);
         movieDirector = rdr.GetString(2);
         movieYear = rdr.GetInt32(3);
       }
-      Movie foundMovie = new Movie(movieName, movieDirector, movieYear, movieId);
+      Movie foundMovie = new Movie(movieTitle, movieDirector, movieYear, movieId);
 
       conn.Close();
       if (conn != null)
@@ -99,10 +99,10 @@ namespace MovieVault.Models
       while (rdr.Read())
       {
         int movieId = rdr.GetInt32(0);
-        string movieName = rdr.GetString(1);
+        string movieTitle = rdr.GetString(1);
         string movieDirector = rdr.GetString(2);
         int movieYear = rdr.GetInt32(3);
-        Movie newMovie = new Movie(movieName, movieDirector, movieYear, movieId);
+        Movie newMovie = new Movie(movieTitle, movieDirector, movieYear, movieId);
         allMovies.Add(newMovie);
       }
       conn.Close();
@@ -118,11 +118,11 @@ namespace MovieVault.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"INSERT INTO movies (name, director, year) VALUES (@MovieName, @MovieDirector, @MovieYear);";
-      MySqlParameter name = new MySqlParameter();
-      name.ParameterName = "@MovieName";
-      name.Value = _name;
-      cmd.Parameters.Add(name);
+      cmd.CommandText = @"INSERT INTO movies (title, director, year) VALUES (@Movietitle, @MovieDirector, @MovieYear);";
+      MySqlParameter title = new MySqlParameter();
+      title.ParameterName = "@Movietitle";
+      title.Value = _title;
+      cmd.Parameters.Add(title);
       MySqlParameter director = new MySqlParameter();
       director.ParameterName = "@MovieDirector";
       director.Value = _director;

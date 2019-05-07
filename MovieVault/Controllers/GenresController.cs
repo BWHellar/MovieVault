@@ -34,18 +34,18 @@ namespace MovieVault.Controllers
     {
       Dictionary<string, object> model = new Dictionary<string, object>();
       Genre selectedGenre = Genre.Find(id);
-      List<Movie> genreMovie = selectedGenre.GetMovie();
+      List<Movie> genreMovies = selectedGenre.GetMovies();
       model.Add("genre", selectedGenre);
-      model.Add("movies", genreMovie);
+      model.Add("movies", genreMovies);
       return View(model);
     }
 
     [HttpGet("/genres/{genreId}/movies")]
-    public ActionResult Create(int genreId, string movieName, string movieDirector, int movieYear)
+    public ActionResult Create(int genreId, string movieTitle, string movieDirector, int movieYear)
     {
       Dictionary<string, object> model = new Dictionary<string, object>();
       Genre foundGenre = Genre.Find(genreId);
-      Movie newMovie = new Movie(movieName, movieDirector, movieYear);
+      Movie newMovie = new Movie(movieTitle, movieDirector, movieYear);
       newMovie.Save();
       foundGenre.AddMovie(newMovie);
       List<Movie> genreMovie = foundGenre.GetMovie();

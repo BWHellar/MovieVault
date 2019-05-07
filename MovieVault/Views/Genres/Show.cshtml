@@ -1,0 +1,14 @@
+
+
+<h3>Here are all the movies in this genre:</h3>
+
+<ol>
+@foreach (var movie in @Model["movies"])
+{
+  <li><a href='/genres/@Model["genre"].GetId()/movies/@movie.GetId()'>@movie.GetTitle()</a></li>
+}
+</ol>
+
+<p><a href='/genres/@Model["genre"].GetId()/movies/new'>Add a new item</a></p>
+<p><a href='/genres'>Return to movie genres list</a></p>
+<p><a href='/'>Return to Main Page</a></p>

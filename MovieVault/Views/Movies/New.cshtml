@@ -1,0 +1,15 @@
+
+
+<h1>Add a new movie to @Model.GetName()</h1>
+
+<form action='/genres/@Model.GetId()/movies' method='post'>
+  <input id='genreId' name='genreId' type='hidden' value='@Model.GetId()'>
+  <label for='movieTitle'>Movie Title: </label>
+  <input id='movieNmovieDirectorame' name='movieTitle' type='text'>
+  <label for='movieDirector'>Directed by: </label>
+  <input id='movieDirector' name='movieDirector' type='text'>
+  <label for='movieYear'>Year of Release: </label>
+  <input id='movieYear' name='movieYear' type='text'>
+
+  <button type='submit'>Add item</button>
+</form>

@@ -1,0 +1,24 @@
+
+
+<div class="grid">
+  <div class="header">
+    <div class="home">
+      <p><a href="/">Home</a></p>
+    </div>
+      <h1>Movie Vault - Genres</h1>
+  </div>
+</div>
+<div class="aline">
+  @if (@Model.Count == 0)
+  {
+    <h3>No genres have been added yet!</h3>
+  }
+
+  @foreach (var genre in Model)
+  {
+    <h3><a href='/genres/@genre.GetId()'>@genre.GetName()</a></h3>
+  }
+</div>
+  <div class="back">
+    <p><a href='/genres/new'>Add New Genre</a></p>
+  </div>
